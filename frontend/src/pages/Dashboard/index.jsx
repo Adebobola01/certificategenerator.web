@@ -166,30 +166,30 @@ const Dashboard = () => {
       setData(allData);
     }
   };
-  const getUserCertificates = async () => {
-    try {
-      getUnauthUserCertificates();
-      if (localStorage.getItem("unauthData")) return;
-      const response = await axiosPrivate.get("/certificates");
-      setPricing(sub);
+  // const getUserCertificates = async () => {
+  //   try {
+  //     getUnauthUserCertificates();
+  //     if (localStorage.getItem("unauthData")) return;
+  //     const response = await axiosPrivate.get("/certificates");
+  //     setPricing(sub);
 
-      setData(response.data.data.certificates);
-      updateCount(response.data.data.certificates);
-    } catch (error) {
-      console.error(error.message);
-      if (error.response.status === 400 || error.response.status === 401) {
-        Toast.fire({
-          icon: "error",
-          title: "Failed Request"
-        });
-      } else if (error.response.status === 500) {
-        Toast.fire({
-          icon: "error",
-          title: "Internal Server Error"
-        });
-      }
-    }
-  };
+  //     setData(response.data.data.certificates);
+  //     updateCount(response.data.data.certificates);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //     if (error.response.status === 400 || error.response.status === 401) {
+  //       Toast.fire({
+  //         icon: "error",
+  //         title: "Failed Request"
+  //       });
+  //     } else if (error.response.status === 500) {
+  //       Toast.fire({
+  //         icon: "error",
+  //         title: "Internal Server Error"
+  //       });
+  //     }
+  //   }
+  // };
 
   const updateCount = param => {
     const cardSnapshot = [...cardData];
@@ -219,7 +219,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getUserCertificates();
+    // getUserCertificates();
   }, []);
 
   //GET EVENTS
@@ -338,7 +338,7 @@ const Dashboard = () => {
                 className="dashboard__title"
               >
                 {/* {profileName ? profileName : `user - ${ShortId}`} */}
-                { `user - ${ShortId}`}
+                {`user - ${ShortId}`}
               </h2>
               <p className="dashboard__description">
                 Get a summary of all the Certificates here
@@ -418,7 +418,7 @@ const Dashboard = () => {
             setAwardeeName={setAwardeeName}
             certificateTitle={certificateTitle}
             setCertificateTitle={setCertificateTitle}
-            getUserCertificates={getUserCertificates}
+            // getUserCertificates={getUserCertificates}
           />
           <DeleteAllModal
             open={openDeleteAllModal}
@@ -448,7 +448,7 @@ const Dashboard = () => {
                         handleChangeCertificateStatus
                       }
                       handleDeleteCertificate={handleDeleteCertificate}
-                      getUserCertificates={getUserCertificates}
+                      // getUserCertificates={getUserCertificates}
                     />
                   ))}
                 </tbody>

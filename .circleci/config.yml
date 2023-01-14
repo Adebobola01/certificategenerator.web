@@ -16,7 +16,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "./frontend/package.json" }}
       - run:
-          name: Build front-end
+          name: build front-end
           command: |
             cd frontend
             npm install
@@ -54,22 +54,23 @@ jobs:
             cd backend
             sudo npm install -g
       - restore_cache:
-            key: dependency-cache-{{ checksum "./backend/package.json" }}
+          key: dependency-cache-{{ checksum "./backend/package.json" }}
       - run:
-          name: Node Install
+          name: build back-end
           command: |
             cd backend
             npm cache clear --force
-            sudo npm install
+            sudo npm install -g --unsafe-perm=true --allow-root
+      #            node index.js
       - save_cache:
           key: dependency-cache-{{ checksum "./backend/package.json" }}
           paths:
             - ./backend/node_modules
       # - run:
-          # name: Run Endpoint tests
-          # command: |
-              # cd backend
-              # npm test
+      # name: Run Endpoint tests
+      # command: |
+      # cd backend
+      # npm test
       - run:
           name: Docker
           when: on_success
@@ -91,32 +92,52 @@ jobs:
       - image: circleci/node:10.19.0-buster
     steps:
       - checkout
-      - setup_remote_docker 
+      - setup_remote_docker
       - add_ssh_keys:
           fingerprints:
-            - "03:84:c3:2d:95:60:2d:b8:80:d2:cb:50:3c:3c:40:66"                
-      - run: 
+            - "03:84:c3:2d:95:60:2d:b8:80:d2:cb:50:3c:3c:40:66"
+      - run:
           name: Deploy success
           when: on_success
           command: |
-            ssh -o "StrictHostKeyChecking no" ubuntu@ec2-34-195-230-138.compute-1.amazonaws.com "\
-            sudo su
-            cd /home/ubuntu
-            sudo docker login
-            sudo docker stop frontend backend
-            sudo docker rm frontend backend
-            sudo docker rmi -f codak77/certificategeneratorwebbackend:backend codak77/certificategeneratorwebfrontend:frontend
-            sudo docker pull codak77/certificategeneratorwebfrontend:frontend
-            sudo docker pull codak77/certificategeneratorwebbackend:backend
-            sudo docker run -d -p 3000:3000 --name frontend codak77/certificategeneratorwebfrontend:frontend
-            sudo docker run -d -p 5000:5000 --name backend codak77/certificategeneratorwebbackend:backend
-            sudo docker builder prune -af
-            sudo docker system prune -af && exit"
-      - run:
-          name: Deploy Failure
-          when: on_fail
-          command: |
-            echo "ERROR auto-deploying Docker Images"
+            ssh -o "StrictHostKeyChecking no" root@65.108.237.42 "\
+            cd /home/sean
+            git clone https://github.com/workshopapps/certificategenerator.web.git
+            cd certificategenerator.web
+            git checkout staging && git status && git pull
+            cd frontend 
+            cp -rf * /home/sean/certgo-staging/frontend
+            cd ..
+            cd backend
+            cp -rf * /home/sean/certgo-staging/backend
+            cd ../..
+            cd certgo-staging
+            cd frontend
+            rm -rf build && npm i --force && npm run build:staging && rm -rf node_modules
+            sudo cp -fr build/* /var/www/certgo.hng.tech/html2
+            cd ..
+            cd backend && npm i --force
+            sudo pm2 save
+            rm -rf /home/sean/certificategenerator.web && exit"
+
+#             ssh -o "StrictHostKeyChecking no" ubuntu@ec2-34-195-230-138.compute-1.amazonaws.com "\
+#             sudo su
+#             cd /home/ubuntu
+#             sudo docker login
+#             sudo docker stop frontend backend
+#             sudo docker rm frontend backend
+#             sudo docker rmi -f codak77/certificategeneratorwebbackend:backend codak77/certificategeneratorwebfrontend:frontend
+#             sudo docker pull codak77/certificategeneratorwebfrontend:frontend
+#             sudo docker pull codak77/certificategeneratorwebbackend:backend
+#             sudo docker run -d -p 3000:3000 --name frontend codak77/certificategeneratorwebfrontend:frontend
+#             sudo docker run -d -p 5000:5000 --name backend codak77/certificategeneratorwebbackend:backend
+#             sudo docker builder prune -af
+#             sudo docker system prune -af && exit"
+#       - run:
+#           name: Deploy Failure
+#           when: on_fail
+#           command: |
+#             echo "ERROR auto-deploying Docker Images"
 
 workflows:
   default:
