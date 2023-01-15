@@ -114,13 +114,18 @@ const userSignup = handleAsync(async (req, res, next) => {
 
     const createdUser = await newUser.save();
 
-    return res.status(201).json(
+    const { accessToken, refreshToken } = await generateTokens(user);
+
+    return res.status(200).json(
       handleResponse(
         {
-          id: createdUser._id,
-          email: createdUser.email
+          token: accessToken,
+          refreshToken: refreshToken,
+          userId: createdUser._id.toString(),
+          name: createdUser.name,
+          subscription: createdUser.subscription
         },
-        "New User has been created."
+        "user logged in successfully"
       )
     );
   }
