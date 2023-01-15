@@ -23,4 +23,4 @@ const axiosFormData = axios.create({
   }
 });
 
-export { axiosPrivate, axiosFormData };
+export { axiosPrivate, axiosFormData, baseURL };

@@ -14,7 +14,9 @@ import profilePic from "../../assets/svgs/default-brandkit.svg";
 import UploadVector from "../../assets/images/uploadPage/uploadVector.svg";
 import Ellipse from "../../assets/svgs/hor-ellipse.svg";
 import "./dashboard.style.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { Sidebar } from "../../Component";
+import HeroSection from "./HeroSection";
 
 const Dashboard = () => {
   const {
@@ -298,65 +300,43 @@ const Dashboard = () => {
 
   // var profileName = JSON.parse(localStorage.getItem("profileName"));
   // console.log(profileName);
-  let id = JSON.parse(localStorage.getItem("userData")).userId;
-  console.log(id.slice(19, 24));
-  const ShortId = id.slice(19, 24);
+  const [ShortId, setShortId] = useState("");
+  useEffect(() => {
+    let id = JSON.parse(localStorage.getItem("userData")).userId;
+    setShortId(id.slice(19, 24));
+  }, []);
+
+  // console.log(id.slice(19, 24));
 
   useEffect(() => {
     if (sub !== "pricing") {
     }
   }, []);
+
+  const [dashboardData, setDashboardData] = useOutletContext();
+
+  useEffect(() => {
+    setDashboardData({
+      file: file,
+      profilePic: profilePic,
+      uploadVector: UploadVector,
+      onFileChange: onFileChange,
+      shortId: ShortId,
+      sub: sub
+    });
+  });
+
   return (
     <>
       <div className="dashboard">
-        <div className="dashboard__hero-section">
-          <div className="dashboard__profile-pic-wrapper">
-            <span className="dashboard__profile-pic">
-              <img src={file || profilePic} alt="brand-kit" />
-            </span>
-            {/* <div className="ellipses" onClick={handleToggle}>
-              <img src={Ellipse} alt="upload-icon" />
-            </div> */}
-            <div className="brandkit-upload">
-              <label htmlFor="file" className="dashboard__upload-label">
-                <img src={UploadVector} alt="upload" />
-                <input
-                  type="file"
-                  id="file"
-                  accept="image/*"
-                  name="file"
-                  onChange={onFileChange}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="flexx">
-            <div className="dashboard__align-start">
-              <h3 className="dashboard__text">Welcome </h3>
-              <h2
-                style={{ textTransform: "capitalize" }}
-                className="dashboard__title"
-              >
-                {/* {profileName ? profileName : `user - ${ShortId}`} */}
-                {`user - ${ShortId}`}
-              </h2>
-              <p className="dashboard__description">
-                Get a summary of all the Certificates here
-              </p>
-              <div>
-                <p className="dashboard__plan dashboard__bold">
-                  Package: <span className="dashboard__bold">{sub}</span>
-                </p>
-              </div>
-            </div>
-            <div className="dashboard__btn">
-              <button onClick={() => navigate("/pricing")}>
-                Upgrade Account
-              </button>
-            </div>
-          </div>
-        </div>
-
+        <HeroSection
+          file={file}
+          profilePic={profilePic}
+          UploadVector={UploadVector}
+          onFileChange={onFileChange}
+          ShortId={ShortId}
+          sub={sub}
+        />
         <div className="dashboard__cards">
           {cardData
             ? cardData.map((item, idx) => <Card key={idx} item={item} />)
