@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./sidebar.style.scss";
 import SidebarDashboard from "../../assets/svgs/sidebar-dashboard.svg";
+import SidebarDashboardActive from "../../assets/svgs/sidebar-dashboard-active.svg";
 import SidebarGroupCollections from "../../assets/svgs/sidebar-group-collections.svg";
+import SidebarGroupCollectionsActive from "../../assets/svgs/sidebar-group-collections-active.svg";
 import SidebarPayment from "../../assets/svgs/sidebar-payment.svg";
+import SidebarPaymentActive from "../../assets/svgs/sidebar-payment-active.svg";
 import SidebarSettings from "../../assets/svgs/sidebar-settings.svg";
+import SidebarSettingsActive from "../../assets/svgs/sidebar-settings-active.svg";
 import LogoutIcon from "../../assets/svgs/logout-icon.svg";
 import ProfilePic from "../../assets/images/profile-pic.png";
 import { Logo } from "../../Component";
@@ -17,6 +21,7 @@ const Sidebar = () => {
     {
       id: 1,
       img: SidebarDashboard,
+      activeIMG: SidebarDashboardActive,
       p: "Dashboard",
       alt: "sidebar-dashboard",
       path: "/dashboard"
@@ -24,6 +29,7 @@ const Sidebar = () => {
     {
       id: 2,
       img: SidebarGroupCollections,
+      activeIMG: SidebarGroupCollectionsActive,
       p: "Group Collections",
       alt: "sidebar-group-collections",
       path: "/dashboard/group-collections"
@@ -31,6 +37,7 @@ const Sidebar = () => {
     {
       id: 3,
       img: SidebarPayment,
+      activeIMG: SidebarPaymentActive,
       p: "Payments",
       alt: "sidebar-payments"
       // path: "/dashboard/payments"
@@ -38,6 +45,7 @@ const Sidebar = () => {
     {
       id: 4,
       img: SidebarSettings,
+      activeIMG: SidebarSettingsActive,
       p: "Settngs",
       alt: "sidebar-settings"
       // path: "/dashboard/settings"
@@ -62,7 +70,10 @@ const Sidebar = () => {
               className={`${item.id === activeSidebar ? "active" : ""}`}
               onClick={() => activeSidebarHandler(item.id, item.path)}
             >
-              <img src={item.img} alt={item.alt} />
+              <img
+                src={item.id === activeSidebar ? item.activeIMG : item.img}
+                alt={item.alt}
+              />
               <p>{item.p}</p>
             </div>
           ))}

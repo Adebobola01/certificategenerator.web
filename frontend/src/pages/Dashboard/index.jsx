@@ -10,12 +10,10 @@ import DeleteAllModal from "./DeleteAllModal";
 import useAppProvider from "../../hooks/useAppProvider";
 import { Loader } from "../../Component";
 import TableRow from "./TableRow";
-import profilePic from "../../assets/svgs/default-brandkit.svg";
-import UploadVector from "../../assets/images/uploadPage/uploadVector.svg";
+
 import Ellipse from "../../assets/svgs/hor-ellipse.svg";
 import "./dashboard.style.scss";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { Sidebar } from "../../Component";
 import HeroSection from "./HeroSection";
 
 const Dashboard = () => {
@@ -41,9 +39,15 @@ const Dashboard = () => {
   const [eventLink, setEventLink] = useState("");
   const baseURL = "https://api.certgo.app/api";
   const accessToken = JSON.parse(localStorage.getItem("userData")).token;
-  const [file, setFile] = useState("");
+  const [
+    [file, setFile],
+    profilePic,
+    onFileChange,
+    UploadVector,
+    ShortId,
+    sub
+  ] = useOutletContext();
   let navigate = useNavigate();
-  let sub = JSON.parse(localStorage.getItem("userData")).subscription;
   let unauthArray;
   if (localStorage.getItem("unauthData")) {
     unauthArray = JSON.parse(localStorage.getItem("unauthData"));
@@ -55,53 +59,6 @@ const Dashboard = () => {
       Authorization: `Bearer ${accessToken}`
     }
   });
-
-  const axiosPrivateKit = axios.create({
-    baseURL,
-    headers: {
-      // "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${accessToken}`
-    }
-  });
-
-  // On file select (from the pop up)
-  // Update the state
-  const onUpdate = async image => {
-    const formData = new FormData();
-    formData.append("file", image);
-    console.log(image);
-    console.log(formData);
-    try {
-      const response = await axiosPrivateKit.put("/users/brand-kit", formData);
-      console.log("Response", response);
-      if (response.status === 404) {
-        Toast.fire({
-          icon: "error",
-          title: "Page not found"
-        });
-      } else if (response.status === 401) {
-        Toast.fire({
-          icon: "error",
-          title: "Request Failed"
-        });
-      } else if (response.status === 500) {
-        Toast.fire({
-          icon: "error",
-          title: "Internal Server Error"
-        });
-      } else {
-        setFile(response.data.brandkit);
-        console.log(response.data.brandkit);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-  const onFileChange = async e => {
-    e.preventDefault();
-    setFile(URL.createObjectURL(e.target.files[0]));
-    onUpdate(e.target.files[0]);
-  };
 
   useEffect(() => {
     const getFile = async e => {
@@ -300,31 +257,11 @@ const Dashboard = () => {
 
   // var profileName = JSON.parse(localStorage.getItem("profileName"));
   // console.log(profileName);
-  const [ShortId, setShortId] = useState("");
-  useEffect(() => {
-    let id = JSON.parse(localStorage.getItem("userData")).userId;
-    setShortId(id.slice(19, 24));
-  }, []);
-
-  // console.log(id.slice(19, 24));
 
   useEffect(() => {
     if (sub !== "pricing") {
     }
   }, []);
-
-  const [dashboardData, setDashboardData] = useOutletContext();
-
-  useEffect(() => {
-    setDashboardData({
-      file: file,
-      profilePic: profilePic,
-      uploadVector: UploadVector,
-      onFileChange: onFileChange,
-      shortId: ShortId,
-      sub: sub
-    });
-  });
 
   return (
     <>
