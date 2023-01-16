@@ -100,7 +100,7 @@ jobs:
           name: Deploy success
           when: on_success
           command: |
-            ssh -o "StrictHostKeyChecking no" root@65.108.237.42 "\
+            ssh -o "StrictHostKeyChecking no" sean@65.108.237.42 "\
             cd /home/sean
             git clone https://github.com/workshopapps/certificategenerator.web.git
             cd certificategenerator.web
