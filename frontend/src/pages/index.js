@@ -28,5 +28,6 @@ export const BulkPreview = lazy(() => import("./BulkPreview"));
 export const SinglePreview = lazy(() => import("./SinglePreview"));
 export const Checkout = lazy(() => import("./Checkout"));
 export const Generate = lazy(() => import("./Dashboard/Generate"));
+export const GroupCollection = lazy(() => import("./GroupCollection"));
 
 export const Home = lazy(() => import("./Home"));

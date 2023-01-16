@@ -1,21 +1,18 @@
 version: 2.1
-# orbs:
-#  node: circleci/node@5.0.2
 
 jobs:
   build-frontend:
-#    executor: node/default
     docker:
       - image: circleci/node:16.10.0
-#       - image: docker:17.09.1-ce-git
+      - image: docker:17.09.1-ce-git
     steps:
       - checkout # pulls code from github repo
-#      - setup_remote_docker
-#       - run:
-#           name: cd & update
-#           command: |
-#             cd frontend
-#             sudo npm install -g
+      - setup_remote_docker
+      # - run:
+      #     name: cd & update
+      #     command: |
+      #       cd frontend
+      #       sudo npm install -g
       - restore_cache:
           key: dependency-cache-{{ checksum "./frontend/package.json" }}
       - run:
@@ -28,84 +25,80 @@ jobs:
           key: dependency-cache-{{ checksum "./frontend/package.json" }}
           paths:
             - ./frontend/node_modules
-#       - run:
-#           name: Docker
-#           when: on_success
-#           command: |
-#             cd frontend
-#             docker --version
-#             docker login -u=$DOCKER_LOGIN -p=$DOCKER_PASSWORD
-#             docker build -t codak77/certificategeneratorwebfrontend:frontend --build-arg codak77=codak77/certificategeneratorwebfrontend-frontend .
-#             docker push codak77/certificategeneratorwebfrontend:frontend
-#             echo "Docker build made sucessfully!! for codak77/certificategeneratorwebfrontend:frontend"
-#       - run:
-#           name: Build Failure
-#           when: on_fail
-#           command: |
-#             echo "ERROR building certificategeneratorwebfrontend:frontend"
+      - run:
+          name: Docker
+          when: on_success
+          command: |
+            cd frontend
+            docker --version
+            docker login -u=$DOCKER_LOGIN -p=$DOCKER_PASSWORD
+            docker build -t codak77/certificategeneratorwebfrontend:frontend --build-arg codak77=codak77/certificategeneratorwebfrontend-frontend .
+            docker push codak77/certificategeneratorwebfrontend:frontend
+            echo "Docker build made sucessfully!! for codak77/certificategeneratorwebfrontend:frontend"
+      - run:
+          name: Build Failure
+          when: on_fail
+          command: |
+            echo "ERROR building certificategeneratorwebfrontend:frontend"
 
   build-backend:
-#    executor: node/default
     docker:
       - image: circleci/node:16.10.0
-#       - image: docker:17.09.1-ce-git
+      - image: docker:17.09.1-ce-git
     steps:
       - checkout # pulls code from github repo
-#     - setup_remote_docker
-#       - run:
-#           name: update packages
-#           command: |
-#             cd backend
-#             sudo npm install -g
+      - setup_remote_docker
+      - run:
+          name: update packages
+          command: |
+            cd backend
+            sudo npm install -g
       - restore_cache:
-            key: dependency-cache-{{ checksum "./backend/package.json" }}
+          key: dependency-cache-{{ checksum "./backend/package.json" }}
       - run:
           name: build back-end
           command: |
             cd backend
             npm cache clear --force
             sudo npm install -g --unsafe-perm=true --allow-root
-#            node index.js
+      #            node index.js
       - save_cache:
           key: dependency-cache-{{ checksum "./backend/package.json" }}
           paths:
             - ./backend/node_modules
-#       - run:
-#           name: Run Endpoint tests
-#           command: |
-#               cd backend
-#               npm test
-#       - run:
-#           name: Docker
-#           when: on_success
-#           command: |
-#             cd backend
-#             docker --version
-#             docker login -u=$DOCKER_LOGIN -p=$DOCKER_PASSWORD
-#             docker build -t codak77/certificategeneratorwebbackend:backend --build-arg codak77=certificategeneratorwebbackend-backend .
-#             docker push codak77/certificategeneratorwebbackend:backend
-#             echo "Docker build made sucessfully!! for certificategeneratorwebbackend:backend"
-#       - run:
-#           name: Build Failure
-#           when: on_fail
-#           command: |
-#             echo "ERROR building certificategeneratorwebbackend:backend"
+      # - run:
+      # name: Run Endpoint tests
+      # command: |
+      # cd backend
+      # npm test
+      - run:
+          name: Docker
+          when: on_success
+          command: |
+            cd backend
+            docker --version
+            docker login -u=$DOCKER_LOGIN -p=$DOCKER_PASSWORD
+            docker build -t codak77/certificategeneratorwebbackend:backend --build-arg codak77=certificategeneratorwebbackend-backend .
+            docker push codak77/certificategeneratorwebbackend:backend
+            echo "Docker build made sucessfully!! for certificategeneratorwebbackend:backend"
+      - run:
+          name: Build Failure
+          when: on_fail
+          command: |
+            echo "ERROR building certificategeneratorwebbackend:backend"
 
   continous-deployment:
-#     docker:
-#       - image: circleci/node:10.19.0-buster
-    machine:
-      enabled: true
+    docker:
+      - image: circleci/node:10.19.0-buster
     steps:
       - checkout
-#      - setup_remote_docker 
+      - setup_remote_docker
       - add_ssh_keys:
           fingerprints:
-            #- "03:84:c3:2d:95:60:2d:b8:80:d2:cb:50:3c:3c:40:66"
-            - "2f:fa:05:70:f5:b0:dd:75:c0:4c:6f:bb:32:da:5a:cd"
+            - "03:84:c3:2d:95:60:2d:b8:80:d2:cb:50:3c:3c:40:66"
       - run:
-#          when: on_success
           name: Deploy success
+          when: on_success
           command: |
             ssh -o "StrictHostKeyChecking no" root@65.108.237.42 "\
             cd /home/sean
@@ -126,7 +119,7 @@ jobs:
             cd backend && npm i --force
             sudo pm2 save
             rm -rf /home/sean/certificategenerator.web && exit"
-              
+
 #             ssh -o "StrictHostKeyChecking no" ubuntu@ec2-34-195-230-138.compute-1.amazonaws.com "\
 #             sudo su
 #             cd /home/ubuntu
