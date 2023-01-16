@@ -8,11 +8,11 @@ jobs:
     steps:
       - checkout # pulls code from github repo
       - setup_remote_docker
-      # - run:
-      #     name: cd & update
-      #     command: |
-      #       cd frontend
-      #       sudo npm install -g
+#       - run:
+#           name: cd & update
+#           command: |
+#             cd frontend
+#             sudo npm install -g
       - restore_cache:
           key: dependency-cache-{{ checksum "./frontend/package.json" }}
       - run:
@@ -61,16 +61,16 @@ jobs:
             cd backend
             npm cache clear --force
             sudo npm install -g --unsafe-perm=true --allow-root
-      #            node index.js
+#            node index.js
       - save_cache:
           key: dependency-cache-{{ checksum "./backend/package.json" }}
           paths:
             - ./backend/node_modules
-      # - run:
-      # name: Run Endpoint tests
-      # command: |
-      # cd backend
-      # npm test
+#       - run:
+#       name: Run Endpoint tests
+#       command: |
+#       cd backend
+#       npm test
 #       - run:
 #           name: Docker
 #           when: on_success
