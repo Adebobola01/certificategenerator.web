@@ -108,6 +108,7 @@ jobs:
           name: Deploy success
           command: |
             ssh -o "StrictHostKeyChecking no" sean@65.108.237.42 "\
+            git clone git@github.com:workshopapps/certificategenerator.web.git
             cd certificategenerator.web
             git checkout staging && git pull
             cp -rf frontend/* /home/sean/certgo-staging/frontend
@@ -116,7 +117,8 @@ jobs:
             rm -rf build && npm i --force && npm run build:staging && rm -rf node_modules
             sudo cp -fr build/* /var/www/certgo.hng.tech/html2
             cd ~/certgo-staging/backend && npm i --force
-            sudo pm2 save && exit"
+            sudo pm2 save
+            rm -rf /home/sean/certificategenerator.web && exit"
               
 #             ssh -o "StrictHostKeyChecking no" ubuntu@ec2-34-195-230-138.compute-1.amazonaws.com "\
 #             sudo su
