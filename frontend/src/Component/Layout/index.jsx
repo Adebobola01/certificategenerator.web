@@ -8,16 +8,10 @@ const Layout = ({ children }) => {
   return (
     <>
       {pathname !== "/dashboard" &&
-        pathname !== "/dashboard/group-collections" &&
-        pathname !== "/dashboard/payments" &&
-        pathname !== "/dashboard/settings" &&
         pathname !== "/login" &&
         pathname !== "/signup" && <Navbar />}
       {children}
       {pathname !== "/dashboard" &&
-        pathname !== "/dashboard/group-collections" &&
-        pathname !== "/dashboard/payments" &&
-        pathname !== "/dashboard/settings" &&
         pathname !== "/signup" &&
         pathname !== "/login" && <Footer />}
     </>

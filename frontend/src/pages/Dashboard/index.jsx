@@ -1,20 +1,19 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+
 import Card from "./Card";
+import "./dashboard.style.scss";
+import TableRow from "./TableRow";
+import { baseURL } from "../../api/axios";
+import Button from "../../Component/button";
+import DeleteAllModal from "./DeleteAllModal";
 import { dummyData, nullDataIcon } from "./utils";
 import { Toast } from "../../Component/ToastAlert";
-import Button from "../../Component/button";
-import CreateCertificateModal from "./CreateCertificateModal";
-import DeleteAllModal from "./DeleteAllModal";
 import useAppProvider from "../../hooks/useAppProvider";
-import { Loader } from "../../Component";
-import TableRow from "./TableRow";
-
-import Ellipse from "../../assets/svgs/hor-ellipse.svg";
-import "./dashboard.style.scss";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import HeroSection from "./HeroSection";
+import CreateCertificateModal from "./CreateCertificateModal";
+import profilePic from "../../assets/svgs/default-brandkit.svg";
+import UploadVector from "../../assets/images/uploadPage/uploadVector.svg";
 
 const Dashboard = () => {
   const {
@@ -36,18 +35,10 @@ const Dashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openDeleteAllModal, setOpenDeleteAllModal] = useState(false);
   const [pricing, setPricing] = useState("");
-  const [eventLink, setEventLink] = useState("");
-  const baseURL = "https://api.certgo.app/api";
   const accessToken = JSON.parse(localStorage.getItem("userData")).token;
-  const [
-    [file, setFile],
-    profilePic,
-    onFileChange,
-    UploadVector,
-    ShortId,
-    sub
-  ] = useOutletContext();
+  const [file, setFile] = useState("");
   let navigate = useNavigate();
+  let sub = JSON.parse(localStorage.getItem("userData")).subscription;
   let unauthArray;
   if (localStorage.getItem("unauthData")) {
     unauthArray = JSON.parse(localStorage.getItem("unauthData"));
@@ -60,10 +51,51 @@ const Dashboard = () => {
     }
   });
 
+  const axiosPrivateKit = axios.create({
+    baseURL,
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  // On file select (from the pop up)
+  // Update the state
+  const onUpdate = async image => {
+    const formData = new FormData();
+    formData.append("file", image);
+    try {
+      const response = await axiosPrivateKit.put("/users/brand-kit", formData);
+      if (response.status === 404) {
+        Toast.fire({
+          icon: "error",
+          title: "Page not found"
+        });
+      } else if (response.status === 401) {
+        Toast.fire({
+          icon: "error",
+          title: "Request Failed"
+        });
+      } else if (response.status === 500) {
+        Toast.fire({
+          icon: "error",
+          title: "Internal Server Error"
+        });
+      } else {
+        setFile(response.data.brandkit);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const onFileChange = async e => {
+    e.preventDefault();
+    setFile(URL.createObjectURL(e.target.files[0]));
+    onUpdate(e.target.files[0]);
+  };
+
   useEffect(() => {
     const getFile = async e => {
       const res = await axiosPrivate.get("/users/brand-kit");
-      console.log("Brand kit", res.data.brandkit);
       setFile(res.data.brandkit);
     };
     getFile();
@@ -95,7 +127,6 @@ const Dashboard = () => {
   };
 
   const handleDeleteCertificate = async id => {
-    console.log(id);
     await axiosPrivate.delete(`/certificates/${id}`);
     Toast.fire({
       icon: "success",
@@ -181,66 +212,6 @@ const Dashboard = () => {
     // getUserCertificates();
   }, []);
 
-  //GET EVENTS
-  const getEvents = async () => {
-    try {
-      return fetch("https://api.certgo.app/api/events", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      }).then(async response => {
-        const result = await response.json();
-
-        var link = result.data.events[0]._id;
-        setEventLink(`https://api.certgo.app/generate/:${link}`);
-
-        if (response.status === 200 || response.status === 201) {
-          Toast.fire({
-            icon: "success",
-            title: "Link Generated"
-          });
-        } else if (response.status === 401 || response.status === 400) {
-          Toast.fire({
-            icon: "error",
-            title: "Email not found"
-          });
-        } else if (response.status === 500) {
-          Toast.fire({
-            icon: "error",
-            title: "Internal Server Error"
-          });
-        }
-      });
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  //GENERATE LINK
-  const title = "Fela Music School";
-  const getToken = JSON.parse(localStorage.getItem("userData"));
-
-  var token = getToken.token;
-
-  const handleGenerate = async () => {
-    fetch("https://api.certgo.app/api/events", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ title: title })
-    }).then(async response => {
-      const result = await response.json();
-      localStorage.setItem("_id", result.data.event._id);
-      localStorage.setItem("eventTitle", result.data.event.title);
-      localStorage.setItem("eventCustomURI", result.data.event.customURI);
-    });
-    getEvents();
-  };
-
   //DELETE ALL USER CERTIFICATES
   const handleDeleteAll = async () => {
     setLoading(true);
@@ -249,14 +220,10 @@ const Dashboard = () => {
       handleDeleteAllCertificates();
       setOpenDeleteAllModal(false);
     }, 500);
-
-    // getUserCertificates()
-    // setOpenOptions(!openOptions)
-    // getUserCertificates();
   };
 
-  // var profileName = JSON.parse(localStorage.getItem("profileName"));
-  // console.log(profileName);
+  let id = JSON.parse(localStorage.getItem("userData")).userId;
+  const ShortId = id.slice(19, 24);
 
   useEffect(() => {
     if (sub !== "pricing") {
@@ -266,14 +233,51 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard">
-        <HeroSection
-          file={file}
-          profilePic={profilePic}
-          UploadVector={UploadVector}
-          onFileChange={onFileChange}
-          ShortId={ShortId}
-          sub={sub}
-        />
+        <div className="dashboard__hero-section">
+          <div className="dashboard__profile-pic-wrapper">
+            <span className="dashboard__profile-pic">
+              <img src={file || profilePic} alt="brand-kit" />
+            </span>
+            <div className="brandkit-upload">
+              <label htmlFor="file" className="dashboard__upload-label">
+                <img src={UploadVector} alt="upload" />
+                <input
+                  type="file"
+                  id="file"
+                  accept="image/*"
+                  name="file"
+                  onChange={onFileChange}
+                />
+              </label>
+            </div>
+          </div>
+          <div className="flexx">
+            <div className="dashboard__align-start">
+              <h3 className="dashboard__text">Welcome </h3>
+              <h2
+                style={{ textTransform: "capitalize" }}
+                className="dashboard__title"
+              >
+                {/* {profileName ? profileName : `user - ${ShortId}`} */}
+                {`user - ${ShortId}`}
+              </h2>
+              <p className="dashboard__description">
+                Get a summary of all the Certificates here
+              </p>
+              <div>
+                <p className="dashboard__plan dashboard__bold">
+                  Package: <span className="dashboard__bold">{sub}</span>
+                </p>
+              </div>
+            </div>
+            <div className="dashboard__btn">
+              <button onClick={() => navigate("/pricing")}>
+                Upgrade Account
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="dashboard__cards">
           {cardData
             ? cardData.map((item, idx) => <Card key={idx} item={item} />)
