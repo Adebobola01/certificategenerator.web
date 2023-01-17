@@ -31,6 +31,7 @@ $size-sm: 12px;
 
 .dashboard {
   background: #fff;
+  height: 100%;
 
   &__hero-section {
     background-color: $dashboard-primary-light;
@@ -119,8 +120,7 @@ $size-sm: 12px;
   }
 
   &__upload-label {
-
-    input[type='file'] {
+    input[type="file"] {
       display: none;
     }
   }
@@ -161,7 +161,7 @@ $size-sm: 12px;
   &__btn {
     text-align: start;
 
-    >button {
+    > button {
       all: unset;
       padding: 12px 20px;
       border-radius: 5px;
@@ -183,7 +183,7 @@ $size-sm: 12px;
     margin: 1.5rem 1rem;
     // padding: 0 1rem 1.5rem 1rem;
     background-color: #ffffff;
-    border: 1px solid #EFEFEF;
+    border: 1px solid #efefef;
     border-radius: 10px;
 
     .table-header {
@@ -214,7 +214,7 @@ $size-sm: 12px;
         place-items: center;
         min-height: 350px;
 
-        >div {
+        > div {
           text-align: center;
 
           p {
@@ -251,7 +251,7 @@ $size-sm: 12px;
           color: #222;
           white-space: nowrap;
           padding: 1rem 1rem;
-          border-top: 1px solid #EFEFEF;
+          border-top: 1px solid #efefef;
         }
 
         .btn-generate {
@@ -305,7 +305,7 @@ $size-sm: 12px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          background-color: #FEFFFF;
+          background-color: #feffff;
           position: absolute;
           z-index: 1000;
           top: 1.5rem;
@@ -334,7 +334,7 @@ $size-sm: 12px;
           }
 
           &:hover {
-            background-color: #B2E1D933;
+            background-color: #b2e1d933;
             color: #222;
             transition: 0.3s ease;
             // border-color: #efefef;
@@ -348,7 +348,7 @@ $size-sm: 12px;
           ul {
             transition: 1s;
             all: unset;
-            margin-top: .5rem;
+            margin-top: 0.5rem;
 
             li {
               font-size: $size-sm;
@@ -358,7 +358,7 @@ $size-sm: 12px;
               letter-spacing: 0.05rem;
               border-radius: 16px;
               list-style: none;
-              margin-bottom: .5rem;
+              margin-bottom: 0.5rem;
             }
           }
 

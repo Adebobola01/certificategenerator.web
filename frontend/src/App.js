@@ -35,7 +35,9 @@ import { IsAuthProtectedRoutes } from "./Component/ProtectedRoutes";
 
 import "./Style/App.scss";
 import { useState, lazy, Suspense } from "react";
-import { Loader } from "./Component";
+import { DashboardContainer, LazyLoader } from "./Component";
+import GroupCollection from "./pages/GroupCollection";
+import CollectionFiles from "./pages/CollectionFiles";
 
 const Login = lazy(() => import("./Component/Auth/Login"));
 const Signup = lazy(() => import("./Component/Auth/Signup"));
@@ -66,21 +68,7 @@ function App() {
               path="/"
               index
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Home />
                 </Suspense>
               }
@@ -89,21 +77,7 @@ function App() {
               path="/signup"
               element={
                 <IsAuthProtectedRoutes>
-                  <Suspense
-                    fallback={
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "70vh",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <Loader />
-                      </div>
-                    }
-                  >
+                  <Suspense fallback={<LazyLoader />}>
                     <Signup />
                   </Suspense>
                 </IsAuthProtectedRoutes>
@@ -113,21 +87,7 @@ function App() {
               path="/login"
               element={
                 <IsAuthProtectedRoutes>
-                  <Suspense
-                    fallback={
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "70vh",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <Loader />
-                      </div>
-                    }
-                  >
+                  <Suspense fallback={<LazyLoader />}>
                     <Login />
                   </Suspense>
                 </IsAuthProtectedRoutes>
@@ -136,67 +96,49 @@ function App() {
             <Route
               path="/comingsoon"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <ComingSoon />
                 </Suspense>
               }
             />
+
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoutes>
-                  <Suspense
-                    fallback={
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "70vh",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <Loader />
-                      </div>
-                    }
-                  >
-                    <Dashboard />
-                  </Suspense>
+                  <DashboardContainer />
                 </ProtectedRoutes>
               }
-            />
+            >
+              <Route
+                index
+                element={
+                  <Suspense fallback={<LazyLoader />}>
+                    <Dashboard />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/group-collections"
+                element={
+                  <Suspense fallback={<LazyLoader />}>
+                    <GroupCollection />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/group-collections/:fileSlug"
+                element={
+                  <Suspense fallback={<LazyLoader />}>
+                    <CollectionFiles />
+                  </Suspense>
+                }
+              />
+            </Route>
             <Route
               path="/generate/:generateId"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Generate />
                 </Suspense>
               }
@@ -204,21 +146,7 @@ function App() {
             <Route
               path="/templates"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Templates />
                 </Suspense>
               }
@@ -226,21 +154,7 @@ function App() {
             <Route
               path="/career"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Career />
                 </Suspense>
               }
@@ -248,21 +162,7 @@ function App() {
             <Route
               path="choice"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Choice />
                 </Suspense>
               }
@@ -270,21 +170,7 @@ function App() {
             <Route
               path="/team"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Team />
                 </Suspense>
               }
@@ -292,21 +178,7 @@ function App() {
             <Route
               path="/terms"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Terms />
                 </Suspense>
               }
@@ -314,21 +186,7 @@ function App() {
             <Route
               path="/preview"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Preview />
                 </Suspense>
               }
@@ -336,21 +194,7 @@ function App() {
             <Route
               path="/aboutUs"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <AboutUs />
                 </Suspense>
               }
@@ -358,21 +202,7 @@ function App() {
             <Route
               path="/FAQ"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <FAQ />
                 </Suspense>
               }
@@ -380,21 +210,7 @@ function App() {
             <Route
               path="/bulk_step"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <BulkStep />
                 </Suspense>
               }
@@ -402,21 +218,7 @@ function App() {
             <Route
               path="/edit_bulk"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <EditBulk />
                 </Suspense>
               }
@@ -424,21 +226,7 @@ function App() {
             <Route
               path="/bulk_preview"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <BulkPreview />
                 </Suspense>
               }
@@ -446,21 +234,7 @@ function App() {
             <Route
               path="/pricing"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Pricing amountHandler={amountHandler} />
                 </Suspense>
               }
@@ -468,21 +242,7 @@ function App() {
             <Route
               path="/contact-us"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <ContactUs />
                 </Suspense>
               }
@@ -490,21 +250,7 @@ function App() {
             <Route
               path="/payment"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Checkout
                     type={type}
                     amount={amount}
@@ -520,21 +266,7 @@ function App() {
               path="/profile"
               element={
                 <ProtectedRoutes>
-                  <Suspense
-                    fallback={
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "70vh",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <Loader />
-                      </div>
-                    }
-                  >
+                  <Suspense fallback={<LazyLoader />}>
                     <ProfilePage />
                   </Suspense>
                 </ProtectedRoutes>
@@ -543,21 +275,7 @@ function App() {
             <Route
               path="/upload"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <UploadCSV />
                 </Suspense>
               }
@@ -565,21 +283,7 @@ function App() {
             <Route
               path="/privacy"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Privacy />
                 </Suspense>
               }
@@ -588,21 +292,7 @@ function App() {
             <Route
               path="/fff5"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <PasswordChangeSuccessfully />
                 </Suspense>
               }
@@ -610,21 +300,7 @@ function App() {
             <Route
               path="/changepassword/:userId/:token"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <ResetPassword />
                 </Suspense>
               }
@@ -632,21 +308,7 @@ function App() {
             <Route
               path="/fff3"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <ChangePassword />
                 </Suspense>
               }
@@ -654,21 +316,7 @@ function App() {
             <Route
               path="/fff2"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <PasswordLinkSent />
                 </Suspense>
               }
@@ -676,21 +324,7 @@ function App() {
             <Route
               path="/resetpassword"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <ForgotPassword />
                 </Suspense>
               }
@@ -698,21 +332,7 @@ function App() {
             <Route
               path="*"
               element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "70vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Loader />
-                    </div>
-                  }
-                >
+                <Suspense fallback={<LazyLoader />}>
                   <Error />
                 </Suspense>
               }
