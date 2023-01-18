@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import Swal from "sweetalert2";
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
+import { ProgressBar } from "react-loader-spinner";
 import { useState, useContext, useEffect } from "react";
 
 import "./uploadCSV.style.scss";
@@ -68,6 +69,7 @@ const UploadCSV = () => {
   // Function to handle file change
   const validateInput = e => {
     setErrorFile(false);
+    setLoading(true);
     const myFile = e.target.files[0];
     if (myFile.type !== "text/csv") {
       setErrorFile(true);
@@ -81,6 +83,7 @@ const UploadCSV = () => {
         setArray(results.data);
       },
     });
+    setLoading(false);
     setFile(myFile);
   };
   
@@ -205,10 +208,11 @@ const UploadCSV = () => {
             >
               Browse computer
             </label>
-            <div>
-              <span>{file.name}</span>
-            </div>
+            {loading && <ProgressBar height="40" ariaLabel="progress-bar-loading" wrapperStyle={{}} borderColor = '#D9D9D9' barColor = '#01D58A' />}
           </div>
+        </div>
+        <div>
+        {!loading && <span>{file.name}</span>}
         </div>
         {errorFile && (
           <div className="messagecsv">Invalid file!! submit only csv files</div>
