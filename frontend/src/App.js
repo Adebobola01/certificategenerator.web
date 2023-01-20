@@ -1,5 +1,7 @@
-import { Route, Routes } from "react-router-dom";
 import * as Sentry from "@sentry/react";
+import { Route, Routes } from "react-router-dom";
+import { useState, lazy, Suspense } from "react";
+
 import {
   AboutUs,
   BulkStep,
@@ -30,14 +32,12 @@ import {
   Checkout,
   Generate
 } from "./pages";
-
-import { IsAuthProtectedRoutes } from "./Component/ProtectedRoutes";
-
 import "./Style/App.scss";
-import { useState, lazy, Suspense } from "react";
-import { DashboardContainer, LazyLoader } from "./Component";
+import Certificate from "./pages/Home/Certificate";
 import GroupCollection from "./pages/GroupCollection";
 import CollectionFiles from "./pages/CollectionFiles";
+import { DashboardContainer, LazyLoader } from "./Component";
+import { IsAuthProtectedRoutes } from "./Component/ProtectedRoutes";
 
 const Login = lazy(() => import("./Component/Auth/Login"));
 const Signup = lazy(() => import("./Component/Auth/Signup"));
@@ -277,6 +277,14 @@ function App() {
               element={
                 <Suspense fallback={<LazyLoader />}>
                   <UploadCSV />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/certificate"
+              element={
+                <Suspense fallback={<LazyLoader />}>
+                  <Certificate />
                 </Suspense>
               }
             />
