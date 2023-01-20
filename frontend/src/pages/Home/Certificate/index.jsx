@@ -1,26 +1,28 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 
-import { ButtonLoader } from "../../../Component/";
 import "./certificate.style.scss";
 import UploadCSV from "../../UploadCSV";
-import DatePicker from "react-datepicker";
+import { ButtonLoader } from "../../../Component/";
 import "react-datepicker/dist/react-datepicker.css";
 import { AppProvider } from "../../../contexts/AppProvider";
 
 export default function Certificate({
   logo,
+  email,
   setLogo,
+  message,
+  issuedBy,
+  setEmail,
+  issueDate,
+  setMessage,
+  awardeeName,
+  setIssuedBy,
+  setIssueDate,
+  setAwardeeName,
   certificateTitle,
   setCertificateTitle,
-  awardeeName,
-  setAwardeeName,
-  message,
-  setMessage,
-  issuedBy,
-  setIssuedBy,
-  issueDate,
-  setIssueDate
 }) {
   const navigate = useNavigate();
   const [date, setDate] = useState(Date.now());
@@ -215,6 +217,22 @@ export default function Certificate({
                 Image upload size: <span id="file-size"></span>
               </p>
             </div>
+
+            <label htmlFor="text" className="label">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              label={"Email"}
+              onChange={e => {
+                setEmail(e.target.value);
+                checkIfFieldIsEmpty();
+              }}
+              className="certificate-title"
+              placeholder="Enter the email address the certificate will be sent to"
+            />
+
             <label htmlFor="text" className="label">
               Certificate Title
             </label>
