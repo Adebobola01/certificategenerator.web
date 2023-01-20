@@ -180,15 +180,55 @@
   }
 
   #container-wrapper {
-   width: 90%;
-   min-height:400px;
+    width: 90%;
+    height: 100%;
     margin: auto;
+    display: grid;
     padding: 10px;
-   max-width: 300px;
-    border-top: 4px solid #1c3b73;
-    border-bottom: 4px solid #1c3b73;
-    border-left: 4px solid #1c3b73;
-    border-right: 4px solid #1c3b73;
+    max-width: 300px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .certgo_title {
+    font-size: 33px;
+    margin-top: 76px;
+    font-weight: 700;
+    color: #6C6C70;
+    line-height: 42px;
+    letter-spacing: -0.5px;
+  }
+
+  .certgo_awardee {
+    font-size: 39px;
+    margin-top: 61px;
+    font-weight: 700;
+    color: #6C6C70;
+    line-height: 49px;
+    letter-spacing: -0.5px;
+  }
+
+  .certgo_message {
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 21px;
+    margin-left: 10px;
+    text-align: center;
+    margin-right: 10px;
+    letter-spacing: -0.408px;
+  }
+
+  .certgo_issue {
+    display: flex;
+    font-size: 18px;
+    margin-top: 40px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 21px;
+    letter-spacing: -0.408px;
+    justify-content: space-around;
   }
 
   #container-design {
@@ -329,14 +369,16 @@
     !important}
 
 
-  @media screen and (min-width: 400px) {
-#container-wrapper{
-  width:100%;
-  min-width:350px;
-  max-width:400px;
-}
+  @media screen and (max-width: 400px) {
+      #container-wrapper{
+          width: 100%;
+          margin: auto;
+          padding: 10px;
+          min-height:500px;
+          max-width: 700px;
+      }
     }
-  @media screen and (min-width: 500px) {
+  @media screen and (min-width: 400px) {
     .certificate-share-hero button {
       width: 160px;
       height: 40px;
@@ -363,7 +405,10 @@
 
     #container-wrapper {
       width: 100%;
-     min-width: 450px;
+      margin: auto;
+      padding: 10px;
+      min-height:500px;
+      max-width: 700px;
     }
 
     .sample2 {
@@ -398,11 +443,11 @@
     }
 
     #container-wrapper {
-      width: 90%;
+      width: 100%;
       margin: auto;
       padding: 10px;
-      min-width: 600px;
-      min-height:400px;
+      min-height:500px;
+      max-width: 700px;
     }
 
     #container-design {
@@ -495,10 +540,10 @@
 
     #container-wrapper {
       width: 80%;
-      min-height:500px;
       margin: auto;
       padding: 10px;
-    max-width: 700px;
+      min-height:500px;
+      max-width: 700px;
     }
     #container-design{
       min-height:500px;
