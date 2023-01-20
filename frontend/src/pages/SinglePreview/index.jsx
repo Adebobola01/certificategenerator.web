@@ -1,28 +1,30 @@
+import { jsPDF } from "jspdf";
+import Swal from "sweetalert2";
+import html2canvas from "html2canvas";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { exportComponentAsPNG } from "react-component-export-image";
+
+import "./singlepreview.style.scss";
 import Modal from "../../Component/Modal";
 import Button from "../../Component/button";
-import "./singlepreview.style.scss";
-import certificate from "../../assets/images/SinglePreview/certTemplate (1).png";
-import certificate2 from "../../assets/images/SinglePreview/certTemplate (2).png";
-import certificate3 from "../../assets/images/SinglePreview/certTemplate (3).png";
-import { exportComponentAsPNG } from "react-component-export-image";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
-import { axiosFormData } from "../../api/axios";
-import Swal from "sweetalert2";
 import Template1 from "./Templates/template1";
 import Template2 from "./Templates/template2";
 import Template3 from "./Templates/template3";
-import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { axiosFormData } from "../../api/axios";
+import certificate from "../../assets/images/SinglePreview/certTemplate (1).png";
+import certificate2 from "../../assets/images/SinglePreview/certTemplate (2).png";
+import certificate3 from "../../assets/images/SinglePreview/certTemplate (3).png";
 
 function SinglePreview({
   logo,
-  certificateTitle,
-  awardeeName,
+  email,
   message,
   issuedBy,
-  issueDate
+  issueDate,
+  awardeeName,
+  certificateTitle,
 }) {
   const navigate = useNavigate();
   //STATES FOR TEMPLATES
