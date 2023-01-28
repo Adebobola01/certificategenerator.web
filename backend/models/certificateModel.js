@@ -46,9 +46,21 @@ const CertificateSchema = new mongoose.Schema({
           },
           link: {
             type: String
-          }
+          },
+          sentToRecipient: {
+            type: Boolean,
+            default: false
+          },
         }
-      ]
+      ],
+      RecipientsQty: {
+        type: Number,
+        default: 0,
+      },
+      sentToAll: {
+        type: Boolean,
+        default: false,
+      }
     }
   ],
   userId: {
