@@ -11,6 +11,7 @@ export const AppProvider = ({ children }) => {
 
   const [logo, setLogo] = useState("");
   const [access, setAccess] = useState();
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [issuedBy, setIssuedBy] = useState("");
   const [issueDate, setIssueDate] = useState("");
@@ -41,34 +42,36 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        token,
-        setToken,
         logo,
-        setLogo,
-        access,
-        setAccess,
-        message,
-        setMessage,
-        issuedBy,
-        setIssuedBy,
-        issueDate,
-        setIssueDate,
-        awardeeName,
-        setAwardeeName,
-        appLoading,
-        setAppLoading,
-        certificateTitle,
-        setCertificateTitle,
         file,
         user,
+        token,
         array,
+        email,
+        access,
+        setLogo,
+        message,
         loading,
         setUser,
         csvData,
         setFile,
+        setToken,
         setArray,
+        setEmail,
+        issuedBy,
+        setAccess,
+        issueDate,
+        setMessage,
         setLoading,
-        setCsvData
+        setCsvData,
+        appLoading,
+        setIssuedBy,
+        awardeeName,
+        setIssueDate,
+        setAppLoading,
+        setAwardeeName,
+        certificateTitle,
+        setCertificateTitle,
       }}
     >
       {children}

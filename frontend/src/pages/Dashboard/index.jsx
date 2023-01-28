@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import Card from "./Card";
@@ -12,8 +12,7 @@ import { dummyData, nullDataIcon } from "./utils";
 import { Toast } from "../../Component/ToastAlert";
 import useAppProvider from "../../hooks/useAppProvider";
 import CreateCertificateModal from "./CreateCertificateModal";
-import profilePic from "../../assets/svgs/default-brandkit.svg";
-import UploadVector from "../../assets/images/uploadPage/uploadVector.svg";
+import HeroSection from "./HeroSection";
 
 const Dashboard = () => {
   const {
@@ -36,9 +35,16 @@ const Dashboard = () => {
   const [openDeleteAllModal, setOpenDeleteAllModal] = useState(false);
   const [pricing, setPricing] = useState("");
   const accessToken = JSON.parse(localStorage.getItem("userData")).token;
-  const [file, setFile] = useState("");
+  const [
+    [file, setFile],
+    profilePic,
+    onFileChange,
+    UploadVector,
+    ShortId,
+    sub
+  ] = useOutletContext();
   let navigate = useNavigate();
-  let sub = JSON.parse(localStorage.getItem("userData")).subscription;
+  // let sub = JSON.parse(localStorage.getItem("userData")).subscription;
   let unauthArray;
   if (localStorage.getItem("unauthData")) {
     unauthArray = JSON.parse(localStorage.getItem("unauthData"));
@@ -50,48 +56,6 @@ const Dashboard = () => {
       Authorization: `Bearer ${accessToken}`
     }
   });
-
-  const axiosPrivateKit = axios.create({
-    baseURL,
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  });
-
-  // On file select (from the pop up)
-  // Update the state
-  const onUpdate = async image => {
-    const formData = new FormData();
-    formData.append("file", image);
-    try {
-      const response = await axiosPrivateKit.put("/users/brand-kit", formData);
-      if (response.status === 404) {
-        Toast.fire({
-          icon: "error",
-          title: "Page not found"
-        });
-      } else if (response.status === 401) {
-        Toast.fire({
-          icon: "error",
-          title: "Request Failed"
-        });
-      } else if (response.status === 500) {
-        Toast.fire({
-          icon: "error",
-          title: "Internal Server Error"
-        });
-      } else {
-        setFile(response.data.brandkit);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-  const onFileChange = async e => {
-    e.preventDefault();
-    setFile(URL.createObjectURL(e.target.files[0]));
-    onUpdate(e.target.files[0]);
-  };
 
   useEffect(() => {
     const getFile = async e => {
@@ -222,9 +186,6 @@ const Dashboard = () => {
     }, 500);
   };
 
-  let id = JSON.parse(localStorage.getItem("userData")).userId;
-  const ShortId = id.slice(19, 24);
-
   useEffect(() => {
     if (sub !== "pricing") {
     }
@@ -233,50 +194,14 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard">
-        <div className="dashboard__hero-section">
-          <div className="dashboard__profile-pic-wrapper">
-            <span className="dashboard__profile-pic">
-              <img src={file || profilePic} alt="brand-kit" />
-            </span>
-            <div className="brandkit-upload">
-              <label htmlFor="file" className="dashboard__upload-label">
-                <img src={UploadVector} alt="upload" />
-                <input
-                  type="file"
-                  id="file"
-                  accept="image/*"
-                  name="file"
-                  onChange={onFileChange}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="flexx">
-            <div className="dashboard__align-start">
-              <h3 className="dashboard__text">Welcome </h3>
-              <h2
-                style={{ textTransform: "capitalize" }}
-                className="dashboard__title"
-              >
-                {/* {profileName ? profileName : `user - ${ShortId}`} */}
-                {`user - ${ShortId}`}
-              </h2>
-              <p className="dashboard__description">
-                Get a summary of all the Certificates here
-              </p>
-              <div>
-                <p className="dashboard__plan dashboard__bold">
-                  Package: <span className="dashboard__bold">{sub}</span>
-                </p>
-              </div>
-            </div>
-            <div className="dashboard__btn">
-              <button onClick={() => navigate("/pricing")}>
-                Upgrade Account
-              </button>
-            </div>
-          </div>
-        </div>
+        <HeroSection
+          file={file}
+          profilePic={profilePic}
+          UploadVector={UploadVector}
+          onFileChange={onFileChange}
+          ShortId={ShortId}
+          sub={sub}
+        />
 
         <div className="dashboard__cards">
           {cardData

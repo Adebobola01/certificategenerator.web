@@ -2,26 +2,28 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 
 import Hero from "./Hero";
-import Certificate from "./Certificate";
 import BulkStep from "./BulkStep";
-import Testimonials from "./Testimonials";
 import Partners from "./Partners";
+import Certificate from "./Certificate";
+import Testimonials from "./Testimonials";
 import useAppProvider from "../../hooks/useAppProvider";
 
 const Home = () => {
   const {
     logo,
+    email,
     setLogo,
+    message,
+    issuedBy,
+    setEmail,
+    issueDate,
+    setMessage,
+    awardeeName,
+    setIssuedBy,
+    setIssueDate,
+    setAwardeeName,
     certificateTitle,
     setCertificateTitle,
-    awardeeName,
-    setAwardeeName,
-    message,
-    setMessage,
-    issuedBy,
-    setIssuedBy,
-    issueDate,
-    setIssueDate
   } = useAppProvider();
 
   return (
@@ -37,17 +39,19 @@ const Home = () => {
       <Hero />
       <Certificate
         logo={logo}
+        email={email}
         setLogo={setLogo}
+        message={message}
+        issuedBy={issuedBy}
+        setEmail={setEmail}
+        issueDate={issueDate}
+        setMessage={setMessage}
+        awardeeName={awardeeName}
+        setIssuedBy={setIssuedBy}
+        setIssueDate={setIssueDate}
+        setAwardeeName={setAwardeeName}
         certificateTitle={certificateTitle}
         setCertificateTitle={setCertificateTitle}
-        awardeeName={awardeeName}
-        setAwardeeName={setAwardeeName}
-        message={message}
-        setMessage={setMessage}
-        issuedBy={issuedBy}
-        setIssuedBy={setIssuedBy}
-        issueDate={issueDate}
-        setIssueDate={setIssueDate}
       />
       <Partners />
       <BulkStep />

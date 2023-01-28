@@ -1,32 +1,35 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 
-import { ButtonLoader } from "../../../Component/";
 import "./certificate.style.scss";
 import UploadCSV from "../../UploadCSV";
-import DatePicker from "react-datepicker";
+import { ButtonLoader } from "../../../Component/";
 import "react-datepicker/dist/react-datepicker.css";
+import useAppProvider from "../../../hooks/useAppProvider";
 import { AppProvider } from "../../../contexts/AppProvider";
 
-export default function Certificate({
-  logo,
-  setLogo,
-  certificateTitle,
-  setCertificateTitle,
-  awardeeName,
-  setAwardeeName,
-  message,
-  setMessage,
-  issuedBy,
-  setIssuedBy,
-  issueDate,
-  setIssueDate
-}) {
+export default function Certificate() {
   const navigate = useNavigate();
   const [date, setDate] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [disabledButton, setDisabledButton] = useState(true);
   const [bulkCertificate, setBulkCertificate] = useState(false);
+  const {
+    email,
+    setLogo,
+    message,
+    issuedBy,
+    setEmail,
+    issueDate,
+    setMessage,
+    awardeeName,
+    setIssuedBy,
+    setIssueDate,
+    setAwardeeName,
+    certificateTitle,
+    setCertificateTitle,
+  } = useAppProvider();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -73,6 +76,7 @@ export default function Certificate({
 
   function checkIfFieldIsEmpty() {
     const file = document.querySelector(".custom-file-input");
+    const email = document.querySelector(".email-title").value;
     const certificateTitle = document.querySelector(".certificate-title").value;
     const awardeeName = document.querySelector(".awardee-name").value;
     const message = document.querySelector(".edication-or-message").value;
@@ -80,6 +84,7 @@ export default function Certificate({
 
     if (
       file.files.length > 0 &&
+      email.trim().length > 0 &&
       certificateTitle.trim().length > 0 &&
       awardeeName.trim().length > 0 &&
       message.trim().length > 0 &&
@@ -215,6 +220,22 @@ export default function Certificate({
                 Image upload size: <span id="file-size"></span>
               </p>
             </div>
+
+            <label htmlFor="text" className="label">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              label={"Email"}
+              className="email-title"
+              onChange={e => {
+                setEmail(e.target.value);
+                checkIfFieldIsEmpty();
+              }}
+              placeholder="Enter the email address the certificate will be sent to"
+            />
+
             <label htmlFor="text" className="label">
               Certificate Title
             </label>

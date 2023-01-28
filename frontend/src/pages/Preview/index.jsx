@@ -6,7 +6,7 @@ import SinglePreview from "../SinglePreview";
 import useAppProvider from "../../hooks/useAppProvider";
 
 export default function Preview() {
-  const { logo, certificateTitle, awardeeName, message, issuedBy, issueDate } =
+  const { logo, certificateTitle, awardeeName, message, issuedBy, issueDate, email } =
     useAppProvider();
 
   const [bulkCertificate, setBulkCertificate] = useState(false);
@@ -67,6 +67,7 @@ export default function Preview() {
       ) : (
         <SinglePreview
           logo={logo}
+          email={email}
           message={message}
           issuedBy={issuedBy}
           issueDate={issueDate}

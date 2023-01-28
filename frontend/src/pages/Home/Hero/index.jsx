@@ -3,15 +3,17 @@ import {useRef} from 'react';
 
 import "./hero.style.scss";
 import Button from "../../../Component/button";
+import { useNavigate } from "react-router-dom";
 import hero from "../../../assets/images/hero.png";
 import tick from "../../../assets/images/tick.png";
 
-export default function Hero() {
-  
+export default function Hero() {  
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    ref.current?.scrollIntoView({behavior: 'smooth'});
+    // ref.current?.scrollIntoView({behavior: 'smooth'});
+    navigate("/certificate");
   };
 
   return (

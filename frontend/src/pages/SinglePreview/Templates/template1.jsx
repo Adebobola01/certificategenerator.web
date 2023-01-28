@@ -1,56 +1,39 @@
-import React from 'react'
+import React from "react";
+
+import CertificateTemplate1 from "../../../assets/images/certTemplates/template.svg";
 
 function Template1({
-    logo,
-    certificateTitle,
-    awardeeName,
-    message,
-    issuedBy,
-    issueDate}) {
-
-
-
-
-    return (
-        <div>
-         <div id="certificateWrapper">
-          <div id="container-wrapper">
-            <div id="container-design">
-              <div className="sample3"></div>
-              <div className="sample"></div>
-
-              <div id="single-preview-card">
-                <div id="single-preview-text">
-                  <div id="preview-text">
-                    <img id = "container-logo" src={logo} style={{ width: "100px" }} alt="logo" />
-                    <h1>{certificateTitle}</h1>
-
-                    <p>THIS CERTIFICATE IS AWARDED TO</p>
-                    <h2>{awardeeName}</h2>
-                    <h6>{message}</h6>
-                  </div>
-
-                  <div className="single-preview-issue">
-                    <div className="issue-by">
-                      <h6>{issuedBy}</h6>
-                      <div className="line"></div>
-                      <p>ISSUED BY</p>
-                    </div>
-
-                    <div className="issue-by">
-                      <h6>{issueDate}</h6>
-                      <div className="line"></div>
-                      <p>ISSUE DATE</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* <div className="sample2"></div> */}
+  message,
+  issuedBy,
+  issueDate,
+  awardeeName,
+  certificateTitle,
+}) {
+  return (
+    <div>
+      <div id="certificateWrapper">
+        <div
+          id="container-wrapper"
+          style={{ backgroundImage: `url(${CertificateTemplate1})` }}
+        >
+          <div className="certgo_title">
+            {certificateTitle}CERTIFICATE OF APPRECIATION
+            <div className="certgo_awardee">{awardeeName}JOY IRABOR</div>
+            <div className="certgo_message">
+              {message}Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.{" "}
+            </div>
+            <div className="certgo_issue">
+              <div>{issueDate}20/01/2023</div>
+              <div>{issuedBy}HNG</div>
             </div>
           </div>
         </div>
-        </div>
-    )
+      </div>
+    </div>
+  );
 }
 
-export default Template1
+export default Template1;
